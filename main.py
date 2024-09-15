@@ -13,7 +13,7 @@ st.set_page_config(page_title='Codebase Chat', page_icon="✨")
 data_dir = './repo'
 
 # configure the model
-key_num = random.randint(1, 5)
+key_num = random.randint(1, 3)
 genai.configure(api_key=st.secrets[f'GOOGLE_API_KEY_{str(key_num)}'])
 model = genai.GenerativeModel('gemini-1.5-flash')
 

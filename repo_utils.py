@@ -7,6 +7,12 @@ import chardet
 import json
 import shutil
 
+# List of common image file extensions
+IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg', '.webp', '.ico', '.mp4', '.webm', '.ogg', '.mp3', '.wav', '.flac', '.aac', '.m4a', '.opus', '.mkv', '.avi', '.mov', '.wmv', '.mpg', '.flv', '.3gp', '.3g2', '.m4v','.git'}
+
+def is_image_file(file_path):
+    _, ext = os.path.splitext(file_path)
+    return ext.lower() in IMAGE_EXTENSIONS
 
 
 def delete_directory(repo_clone_path):
@@ -32,6 +38,7 @@ def get_reponame(repo_url):
         combined_string = f"{username}+{reponame}"
 
     return combined_string
+
 
 
 
@@ -65,8 +72,17 @@ def is_valid_repolink(repolink):
     pattern = re.compile(r'^https://github\.com/[^/]+/[^/]+(/tree/[^/]+)?/?$')
     return bool(pattern.match(repolink))
 
+
+
+
+
+
 def process_file(file_path, clone_path):
     relative_path = os.path.relpath(file_path, clone_path)
+    print(f"currently reading : {file_path}")
+
+    if is_image_file(file_path):
+        return None
     try:
         with open(file_path, 'rb') as f:
             raw_data = f.read()
@@ -86,13 +102,11 @@ def process_file(file_path, clone_path):
                     return None
             else:
                 # Handle other text files
-                result = chardet.detect(raw_data)
-                encoding = result['encoding']
-                if encoding is not None:
-                    text = raw_data.decode(encoding)
+                try:
+                    text = raw_data.decode('utf-8')
                     return relative_path, text
-                else:
-                    print(f"Skipping non-text file: {file_path}")
+                except UnicodeDecodeError:
+                    print(f"Skipping non-text or binary file: {file_path}")
                     return None
     except Exception as e:
         print(f"Failed to read {file_path}: {e}")
