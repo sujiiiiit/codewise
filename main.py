@@ -65,7 +65,7 @@ with st.sidebar:
                 st.session_state['repo_details']['files2code'] = repo_dict
                 st.session_state['repo_details']['code'] = make_all_files_content_str(repo_dict)
                 st.session_state['repo_details']['is_entire_code_loaded'] = -1
-                st.session_state['title'] = f"Chat with the uploaded Zip file (using Gemini 1.5 Flash API)"
+                st.session_state['title'] = f"Chat with the uploaded Zip file"
                 st.session_state['button_msg'] = 'Change Zip File'
         
         # Handle GitHub repo link
@@ -95,7 +95,7 @@ with st.sidebar:
                 st.session_state['repo_details']['files2code'] = repo_dict
                 st.session_state['repo_details']['code'] = make_all_files_content_str(repo_dict)
                 st.session_state['repo_details']['is_entire_code_loaded'] = -1
-                st.session_state['title'] = f"Chat with {reponame} (using Gemini 1.5 Flash API)"
+                st.session_state['title'] = f"Chat with {reponame}"
                 st.session_state['button_msg'] = 'Change Repo'
             else:
                 st.write("Not a valid GitHub Repo link")
